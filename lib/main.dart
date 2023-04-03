@@ -1,3 +1,4 @@
+import 'package:bokgpt_client/screens/infoscreen/infoscreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -35,30 +36,7 @@ class MyApp extends StatelessWidget {
                   ),
                 ],
               )),
-          body: MyHomePage(title: "bokgpt"),
+          body: MainScreen(),
         ));
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
   }
 }
