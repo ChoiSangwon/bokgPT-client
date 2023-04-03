@@ -12,10 +12,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      color: Colors.black,
-      title: 'bokGpt',
-      home: const MyHomePage(title: 'bokgPT'),
-    );
+        title: 'bokGpt',
+        theme: ThemeData(
+          //   primaryColor: Colors.black,
+          //   // primarySwatch: Colors.yellow,
+          fontFamily: 'pretendard',
+        ),
+        home: Scaffold(
+          appBar: AppBar(
+              backgroundColor: Colors.white,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  // Image.asset("assets/images/splash.png"),
+                  Text(
+                    "bokgPT",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 22,
+                    ),
+                  ),
+                ],
+              )),
+          body: MyHomePage(title: "bokgpt"),
+        ));
   }
 }
 
