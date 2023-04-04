@@ -43,20 +43,74 @@ class _MainScreenState extends State<MainScreen> {
               ],
             ),
           ),
-          Container(
-            width: Get.width - 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(240, 241, 249, 1),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.7),
-                  spreadRadius: 0,
-                  blurRadius: 5.0,
-                  offset: const Offset(2, 2), // changes position of shadow
+          GestureDetector(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      child: SizedBox(
+                        height: 200,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.warning,
+                              size: 40,
+                            ),
+                            Text(
+                              '아직 서비스 준비중입니다',
+                              style: TextStyle(
+                                fontSize: 22,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  });
+            },
+            child: Stack(
+              children: [
+                Container(
+                  width: Get.width - 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    color: const Color.fromRGBO(240, 241, 249, 1),
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(20),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.7),
+                        spreadRadius: 0,
+                        blurRadius: 5.0,
+                        offset:
+                            const Offset(2, 2), // changes position of shadow
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  alignment: Alignment.center,
+                  height: 60,
+                  width: Get.width - 60,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.search,
+                        size: 40,
+                      ),
+                      Text(
+                        "나에게 맞는 복지서비스 찾기",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
@@ -79,7 +133,7 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 Container(
                   width: Get.width - 60,
-                  height: 200,
+                  height: 160,
                   decoration: BoxDecoration(
                     color: const Color.fromRGBO(240, 249, 243, 1),
                     borderRadius: const BorderRadius.all(
