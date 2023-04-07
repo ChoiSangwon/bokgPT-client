@@ -15,9 +15,11 @@ class _ThemescreenState extends State<Themescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: Colors.white,
         child: Column(
           children: [
             ThemeHeader(),
+            ThemeList(),
           ],
         ),
       ),
@@ -160,7 +162,8 @@ class _ThemeHeaderState extends State<ThemeHeader> {
                       }
                       return "입양위탁";
                     }(),
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+                    style: const TextStyle(
+                        fontSize: 12, fontWeight: FontWeight.w600),
                   ),
                 ],
               ),
@@ -179,9 +182,76 @@ class ThemeList extends StatefulWidget {
   State<ThemeList> createState() => _ThemeListState();
 }
 
+class NewsArticle {
+  final String title;
+  final String summary;
+
+  NewsArticle({required this.title, required this.summary});
+}
+
 class _ThemeListState extends State<ThemeList> {
+  final List<NewsArticle> articles = [
+    NewsArticle(title: "서울시 재난 지원금", summary: "현금지급"),
+    NewsArticle(title: "Article 2", summary: "Summary 2"),
+    NewsArticle(title: "Article 3", summary: "Summary 3"),
+    NewsArticle(title: "Article 4", summary: "Summary 4"),
+    NewsArticle(title: "Article 5", summary: "Summary 5"),
+    NewsArticle(title: "Article 6", summary: "Summary 6"),
+    NewsArticle(title: "Article 7", summary: "Summary 7"),
+    NewsArticle(title: "Article 8", summary: "Summary 8"),
+    NewsArticle(title: "Article 9", summary: "Summary 9"),
+    NewsArticle(title: "Article 10", summary: "Summary 10"),
+  ];
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.only(left: 15, right: 15),
+        child:
+            // height: Get.height - 166,
+            ListView.builder(
+          itemCount: articles.length,
+          itemBuilder: (BuildContext context, int index) {
+            return GestureDetector(
+              onTap: () {
+                // 아이템을 클릭했을 때 수행할 작업
+                print("Clicked article $index");
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(
+                      width: 1,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      articles[index].title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 5),
+                    Text(
+                      articles[index].summary,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 }
