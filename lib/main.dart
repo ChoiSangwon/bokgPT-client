@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   // Image.asset("assets/images/splash.png"),
+                  // Icon(Icons.bulb)
                   Text(
                     "bokgPT",
                     style: TextStyle(
