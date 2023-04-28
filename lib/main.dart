@@ -1,4 +1,5 @@
-import 'package:bokgpt_client/screens/infoscreen/infoscreen.dart';
+// import 'package:bokgpt_client/screens/infoscreen/infoscreen.dart';
+import 'package:bokgpt_client/screens/theme/themescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
                   ),
                 ],
               )),
-          body: MainScreen(),
+          body: Themescreen(),
         ));
   }
 }
