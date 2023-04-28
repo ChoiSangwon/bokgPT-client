@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import "package:bokgpt_client/env/env.dart";
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:bokgpt_client/models/themelist.dart';
+// import 'package:bokgpt_client/models/themelist.dart';
 
 class Themescreen extends StatefulWidget {
   const Themescreen({super.key});
@@ -18,7 +23,14 @@ class _ThemescreenState extends State<Themescreen> {
         color: Colors.white,
         child: Column(
           children: [
-            ThemeHeader(),
+            ThemeHeader(
+              onDataChanged: (data) {
+                // onDataChanged 콜백 추가
+                setState(() {
+                  _data = data; // _data 변경
+                });
+              },
+            ),
             ThemeList(),
           ],
         ),
@@ -28,37 +40,60 @@ class _ThemescreenState extends State<Themescreen> {
 }
 
 class ThemeHeader extends StatefulWidget {
-  const ThemeHeader({super.key});
+  final void Function(List<InterestTheme>) onDataChanged;
 
+  const ThemeHeader({super.key, required this.onDataChanged});
   @override
   State<ThemeHeader> createState() => _ThemeHeaderState();
 }
 
+List<InterestTheme> _data = [];
+
 class _ThemeHeaderState extends State<ThemeHeader> {
   int selectedItemIndex = -1;
-  List<bool> isSelectedList = List.generate(14, (_) => false);
+  List<bool> isSelectedList = List.generate(15, (_) => false);
+  // List<InterestTheme> _data = [];
+
+  Future<void> _fetchData(int themeId) async {
+    final response = await http.get(Uri.parse(
+        '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string'));
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(utf8.decode(response.bodyBytes))["content"]
+          as List<dynamic>;
+      // print(jsonData);
+      final List<InterestTheme> data = jsonData
+          .map((e) => InterestTheme.fromJson(e as Map<String, dynamic>))
+          .toList();
+      setState(() {
+        _data = data;
+      });
+      widget.onDataChanged(data);
+    } else {
+      throw Exception('Failed to load data from endpoint.');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 90,
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       color: Colors.white,
       child: ListView.separated(
         scrollDirection: Axis.horizontal, // 가로 스크롤 방향 설정
-        itemCount: 14, // 생성할 위젯의 개수
+        itemCount: 15, // 생성할 위젯의 개수
         separatorBuilder: (context, index) {
-          return SizedBox(width: 15); // 각 아이템 사이 간격 설정
+          return const SizedBox(width: 15); // 각 아이템 사이 간격 설정
         },
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
+              _fetchData(index + 1);
               setState(() {
                 // 선택된 인덱스 저장
                 selectedItemIndex = index;
-
                 // 모든 아이템의 선택 상태를 false로 초기화
                 isSelectedList.fillRange(0, isSelectedList.length, false);
-
                 // 선택한 아이템의 선택 상태를 true로 변경
                 isSelectedList[index] = true;
               });
@@ -68,9 +103,9 @@ class _ThemeHeaderState extends State<ThemeHeader> {
               height: 70,
               decoration: BoxDecoration(
                 color: isSelectedList[index]
-                    ? Color.fromRGBO(176, 185, 255, 1)
-                    : Color.fromRGBO(233, 233, 233, 1),
-                borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ? const Color.fromRGBO(176, 185, 255, 1)
+                    : const Color.fromRGBO(233, 233, 233, 1),
+                borderRadius: const BorderRadius.all(Radius.circular(15)),
               ),
               child: Column(
                 children: [
@@ -115,7 +150,10 @@ class _ThemeHeaderState extends State<ThemeHeader> {
                       if (index == 12) {
                         return Icons.handyman;
                       }
-                      return Icons.accessibility;
+                      if (index == 13) {
+                        return Icons.accessibility;
+                      }
+                      return Icons.e_mobiledata;
                     }(),
                     size: 50,
                   ),
@@ -128,7 +166,7 @@ class _ThemeHeaderState extends State<ThemeHeader> {
                         return "서민금융";
                       }
                       if (index == 2) {
-                        return "임신출산";
+                        return "서민금융";
                       }
                       if (index == 3) {
                         return "주거";
@@ -160,7 +198,10 @@ class _ThemeHeaderState extends State<ThemeHeader> {
                       if (index == 12) {
                         return "생활지원";
                       }
-                      return "입양위탁";
+                      if (index == 13) {
+                        return "입양위탁";
+                      }
+                      return "기타";
                     }(),
                     style: const TextStyle(
                         fontSize: 12, fontWeight: FontWeight.w600),
@@ -185,23 +226,10 @@ class ThemeList extends StatefulWidget {
 class NewsArticle {
   final String title;
   final String summary;
-
   NewsArticle({required this.title, required this.summary});
 }
 
 class _ThemeListState extends State<ThemeList> {
-  final List<NewsArticle> articles = [
-    NewsArticle(title: "서울시 재난 지원금", summary: "현금지급"),
-    NewsArticle(title: "Article 2", summary: "Summary 2"),
-    NewsArticle(title: "Article 3", summary: "Summary 3"),
-    NewsArticle(title: "Article 4", summary: "Summary 4"),
-    NewsArticle(title: "Article 5", summary: "Summary 5"),
-    NewsArticle(title: "Article 6", summary: "Summary 6"),
-    NewsArticle(title: "Article 7", summary: "Summary 7"),
-    NewsArticle(title: "Article 8", summary: "Summary 8"),
-    NewsArticle(title: "Article 9", summary: "Summary 9"),
-    NewsArticle(title: "Article 10", summary: "Summary 10"),
-  ];
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -210,12 +238,11 @@ class _ThemeListState extends State<ThemeList> {
         child:
             // height: Get.height - 166,
             ListView.builder(
-          itemCount: articles.length,
+          itemCount: _data.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () {
-                // 아이템을 클릭했을 때 수행할 작업
-                print("Clicked article $index");
+                // print("Clicked article $index");
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -231,7 +258,7 @@ class _ThemeListState extends State<ThemeList> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      articles[index].title,
+                      _data[index].title,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -239,7 +266,7 @@ class _ThemeListState extends State<ThemeList> {
                     ),
                     const SizedBox(height: 5),
                     Text(
-                      articles[index].summary,
+                      _data[index].title,
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.grey[600],
