@@ -58,21 +58,12 @@ var data = {
 };
 
 class _DetailScreenState extends State<DetailScreen> {
-  // Future<void> _fetchData(int detailId) async {
-  //   final response =
-  //       await http.get(Uri.parse('${ENV.apiEndpoint}/welfares/${detailId}'));
-
-  //   if (response.statusCode == 200) {
-  //     print(response.body);
-  //     _data = DetailData.fromJson(json.decode(response.body));
-  //   } else {
-  //     throw Exception('Failed to load detail data');
-  //   }
-  // }
+  var value = Get.arguments;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       body: Container(
         margin: const EdgeInsets.only(
           left: 20,
@@ -85,7 +76,7 @@ class _DetailScreenState extends State<DetailScreen> {
             children: [
               Container(
                 child: Text(
-                  "아동발달지원계좌(디딤씨앗통장)지원", // serviceTitle
+                  "${value.serviceTitle}", // serviceTitle
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -120,15 +111,15 @@ class _DetailScreenState extends State<DetailScreen> {
                   ],
                 ),
                 child: Text(
-                  "취약계층 아동의 사회진출 시 학자금･취업･창업･주거마련 등에 소요되는 초기비용 마련을 위한 자산형성을 지원합니다.", // summary
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                  "${value.summary}", // summary
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(bottom: 10, top: 10),
+                margin: const EdgeInsets.only(bottom: 10, top: 10),
                 child: Text(
                   "지역 및 대상",
                   style: TextStyle(
@@ -299,12 +290,41 @@ class _DetailScreenState extends State<DetailScreen> {
                 ),
                 padding: EdgeInsets.all(5),
                 child: Text(
-                  "아동발달지원계좌(디딤씨앗통장) 지원대상은 다음과 같습니다.\n\n(보호대상아동) 만 18세 미만의 아동복지시설(아동양육시설, 공동생활가정) 보호아동, 가정위탁 보호아동, 장애인생활시설 아동, 소년소녀가정 아동\n\n\n(기초생활수급가구 아동) 중위소득 40% 이하의 수급 가구(생계, 의료 급여)의 만12세부터 만17세까지 아동 중 신규 선정하여 만18세 미만까지 지원\n\n\n(기 가입 아동 중 가정복귀 및 탈수급가구 아동)\n\n\n- 보호대상아동이 가정회복으로 중도에 가정으로 복귀하는 아동도 계속 지원\n\n\n- 기초생활수급가구 아동 또한, 해당 가정이 중위소득 40%를 초과해도 계속 지원\n\n\n정부(지자체)의 유사 자산형성지원사업과 중복 지원이 불가합니다.\n\n\n희망플러스(서울시), 꿈나래(서울시) 통장 등과 중복지원 금지\n\n\n서울시는 꿈나래통장 사업과 지원가구 중복 가능성을 고려하여 기초수급자 아동 사업지역에서 제외\n\n다만, 지원대상 및 사업취지를 고려하여,\n희망키움통장\n과는 중복지원 가능('13.1.1~)",
+                  // "아동발달지원계좌(디딤씨앗통장) 지원대상은 다음과 같습니다.\n\n(보호대상아동) 만 18세 미만의 아동복지시설(아동양육시설, 공동생활가정) 보호아동, 가정위탁 보호아동, 장애인생활시설 아동, 소년소녀가정 아동\n\n\n(기초생활수급가구 아동) 중위소득 40% 이하의 수급 가구(생계, 의료 급여)의 만12세부터 만17세까지 아동 중 신규 선정하여 만18세 미만까지 지원\n\n\n(기 가입 아동 중 가정복귀 및 탈수급가구 아동)\n\n\n- 보호대상아동이 가정회복으로 중도에 가정으로 복귀하는 아동도 계속 지원\n\n\n- 기초생활수급가구 아동 또한, 해당 가정이 중위소득 40%를 초과해도 계속 지원\n\n\n정부(지자체)의 유사 자산형성지원사업과 중복 지원이 불가합니다.\n\n\n희망플러스(서울시), 꿈나래(서울시) 통장 등과 중복지원 금지\n\n\n서울시는 꿈나래통장 사업과 지원가구 중복 가능성을 고려하여 기초수급자 아동 사업지역에서 제외\n\n다만, 지원대상 및 사업취지를 고려하여,\n희망키움통장\n과는 중복지원 가능('13.1.1~)",
+                  "${value.supportedBy}",
                   style: TextStyle(
                     color: Colors.black,
                   ),
                 ),
-              ), //suportedBy
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 10, top: 10),
+                child: Text(
+                  "선정기준 내용",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    width: 1,
+                    color: const Color.fromRGBO(225, 225, 225, 1),
+                  ),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(20),
+                  ),
+                ),
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  "${value.selectionCriteria}",
+                  style: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+              ),
               Center(
                 child: Container(
                   margin: EdgeInsets.only(top: 20, bottom: 20),
@@ -326,8 +346,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   ),
                   child: GestureDetector(
                     onTap: () async {
-                      final url =
-                          Uri.parse('https://dev-yakuza.posstree.com/en/');
+                      final url = Uri.parse('${value.detailLink}'); //서비스 url
                       if (await canLaunchUrl(url)) {
                         launchUrl(url, mode: LaunchMode.externalApplication);
                       }

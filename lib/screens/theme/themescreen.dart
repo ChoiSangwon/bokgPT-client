@@ -1,3 +1,5 @@
+import 'package:bokgpt_client/screens/detail/detailscreen.dart';
+import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -6,6 +8,7 @@ import "package:bokgpt_client/env/env.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bokgpt_client/models/themelist.dart';
+import 'package:bokgpt_client/models/detailData.dart';
 // import 'package:bokgpt_client/models/themelist.dart';
 
 class Themescreen extends StatefulWidget {
@@ -19,6 +22,7 @@ class _ThemescreenState extends State<Themescreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -47,7 +51,7 @@ class ThemeHeader extends StatefulWidget {
   State<ThemeHeader> createState() => _ThemeHeaderState();
 }
 
-List<InterestTheme> _data = [];
+List<InterestTheme> _data = Get.arguments;
 
 class _ThemeHeaderState extends State<ThemeHeader> {
   int selectedItemIndex = -1;
@@ -67,6 +71,7 @@ class _ThemeHeaderState extends State<ThemeHeader> {
       setState(() {
         _data = data;
       });
+      // print(_data);
       widget.onDataChanged(data);
     } else {
       throw Exception('Failed to load data from endpoint.');
@@ -75,6 +80,7 @@ class _ThemeHeaderState extends State<ThemeHeader> {
 
   @override
   Widget build(BuildContext context) {
+    print(_data);
     return Container(
       height: 90,
       padding: const EdgeInsets.all(10),
@@ -230,6 +236,26 @@ class NewsArticle {
 }
 
 class _ThemeListState extends State<ThemeList> {
+  late DetailData _detData;
+  Future fetchDetailData(int detailId) async {
+    final response =
+        await http.get(Uri.parse('${ENV.apiEndpoint}/welfares/${detailId}'));
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(utf8.decode(response.bodyBytes));
+      DetailData tmp = DetailData.fromJson(jsonData);
+      print(jsonData);
+      // print(tmp.id);
+      _detData = tmp;
+      // setState(() {
+      //   _detData = jsonData;
+      // });
+      // print(_detData);
+    } else {
+      throw Exception('Failed to load detail data');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -241,8 +267,9 @@ class _ThemeListState extends State<ThemeList> {
           itemCount: _data.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onTap: () {
-                // print("Clicked article $index");
+              onTap: () async {
+                await fetchDetailData(_data[index].id);
+                Get.toNamed('/detail', arguments: _detData);
               },
               child: Container(
                 padding: const EdgeInsets.all(10),
@@ -254,25 +281,28 @@ class _ThemeListState extends State<ThemeList> {
                     ),
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _data[index].title,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                child: Container(
+                  width: Get.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _data[index].title,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 5),
-                    Text(
-                      _data[index].title,
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey[600],
+                      const SizedBox(height: 5),
+                      Text(
+                        _data[index].title,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             );

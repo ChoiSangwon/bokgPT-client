@@ -1,5 +1,8 @@
 // import 'package:bokgpt_client/screens/infoscreen/infoscreen.dart';
+import 'package:bokgpt_client/screens/detail/detailscreen.dart';
+import 'package:bokgpt_client/screens/info/mainscreen.dart';
 import 'package:bokgpt_client/screens/theme/themescreen.dart';
+import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,31 +17,38 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-        title: 'bokGpt',
-        theme: ThemeData(
-          //   primaryColor: Colors.black,
-          //   // primarySwatch: Colors.yellow,
-          fontFamily: 'pretendard',
-        ),
-        home: Scaffold(
-          appBar: AppBar(
-              backgroundColor: Colors.white,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  // Image.asset("assets/images/splash.png"),
-                  // Icon(Icons.bulb)
-                  Text(
-                    "bokgPT",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 22,
-                    ),
-                  ),
-                ],
-              )),
-          body: Themescreen(),
-        ));
+      defaultTransition: Transition.fadeIn,
+      getPages: [
+        GetPage(name: '/', page: () => MainScreen()),
+        GetPage(name: '/theme', page: () => Themescreen()),
+        GetPage(name: '/detail', page: () => DetailScreen()),
+      ],
+      theme: ThemeData(
+        //   primaryColor: Colors.black,
+        //   // primarySwatch: Colors.yellow,
+        fontFamily: 'pretendard',
+      ),
+      home: Scaffold(
+        // appBar: AppBar(
+        //   backgroundColor: Colors.white,
+        //   title: Row(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: const [
+        //       // Image.asset("assets/images/splash.png"),
+        //       // Icon(Icons.bulb)
+        //       Text(
+        //         "bokgPT",
+        //         style: TextStyle(
+        //           color: Colors.black,
+        //           fontWeight: FontWeight.w500,
+        //           fontSize: 22,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        body: MainScreen(),
+      ),
+    );
   }
 }
