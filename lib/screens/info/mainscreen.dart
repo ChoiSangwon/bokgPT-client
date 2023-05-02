@@ -1,5 +1,12 @@
+import 'package:bokgpt_client/screens/theme/themescreen.dart';
+import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import "package:bokgpt_client/env/env.dart";
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:bokgpt_client/widget/widgets.dart';
+import 'package:bokgpt_client/models/themelist.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -12,6 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(),
       body: SingleChildScrollView(
           child: Column(
         // mainAxisAlignment: MainAxisAlignment.center,
@@ -158,7 +166,27 @@ class ThemeBokji extends StatefulWidget {
 }
 
 class _ThemeBokjiState extends State<ThemeBokji> {
+  List<InterestTheme> _data = [];
   @override
+  Future<void> _fetchData(int themeId) async {
+    final response = await http.get(Uri.parse(
+        '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string'));
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(utf8.decode(response.bodyBytes))["content"]
+          as List<dynamic>;
+      // print(jsonData);
+      final List<InterestTheme> data = jsonData
+          .map((e) => InterestTheme.fromJson(e as Map<String, dynamic>))
+          .toList();
+      setState(() {
+        _data = data;
+      });
+      // print(data);
+    } else {
+      throw Exception('Failed to load data from endpoint.');
+    }
+  }
+
   Widget build(BuildContext context) {
     return Column(
       children: [
@@ -213,17 +241,11 @@ class _ThemeBokjiState extends State<ThemeBokji> {
                             },
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        child: SizedBox(
-                                          child: Text("$index"),
-                                        ),
-                                      );
-                                    },
-                                  );
+                                onTap: () async {
+                                  await _fetchData(index + 1);
+                                  // print(_data);
+                                  Get.toNamed('/theme',
+                                      arguments: [_data, index]);
                                 },
                                 child: Container(
                                   width: 60,
@@ -304,17 +326,11 @@ class _ThemeBokjiState extends State<ThemeBokji> {
                             },
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        child: SizedBox(
-                                          child: Text("${index + 7}"),
-                                        ),
-                                      );
-                                    },
-                                  );
+                                onTap: () async {
+                                  await _fetchData(index + 7);
+                                  print(_data);
+                                  Get.toNamed('/theme',
+                                      arguments: [_data, index + 7]);
                                 },
                                 child: Container(
                                   width: 60,

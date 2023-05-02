@@ -26,17 +26,3 @@ class InterestTheme {
     );
   }
 }
-
-Future<List<InterestTheme>> fetchDataFromEndpoint(int themeId) async {
-  final response = await http.get(Uri.parse(
-      'http://54.180.116.84:8080/welfares/interest-themes/${themeId}?page=0&size=10&sort=string'));
-  if (response.statusCode == 200) {
-    final jsonData = jsonDecode(response.body) as List<dynamic>;
-    final List<InterestTheme> data = jsonData
-        .map((e) => InterestTheme.fromJson(e as Map<String, dynamic>))
-        .toList();
-    return data;
-  } else {
-    throw Exception('Failed to load data from endpoint.');
-  }
-}
