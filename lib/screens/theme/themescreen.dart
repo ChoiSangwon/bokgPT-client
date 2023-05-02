@@ -51,12 +51,12 @@ class ThemeHeader extends StatefulWidget {
   State<ThemeHeader> createState() => _ThemeHeaderState();
 }
 
-List<InterestTheme> _data = Get.arguments;
+List<InterestTheme> _data = Get.arguments[0];
 
 class _ThemeHeaderState extends State<ThemeHeader> {
-  int selectedItemIndex = -1;
-  List<bool> isSelectedList = List.generate(15, (_) => false);
-  // List<InterestTheme> _data = [];
+  int selectedItemIndex = Get.arguments[1];
+  List<bool> isSelectedList =
+      List.generate(15, (index) => index == Get.arguments[1] ? true : false);
 
   Future<void> _fetchData(int themeId) async {
     final response = await http.get(Uri.parse(
@@ -64,7 +64,7 @@ class _ThemeHeaderState extends State<ThemeHeader> {
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(utf8.decode(response.bodyBytes))["content"]
           as List<dynamic>;
-      // print(jsonData);
+      print(jsonData);
       final List<InterestTheme> data = jsonData
           .map((e) => InterestTheme.fromJson(e as Map<String, dynamic>))
           .toList();
@@ -78,9 +78,27 @@ class _ThemeHeaderState extends State<ThemeHeader> {
     }
   }
 
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _scrollToSelectedItem();
+    });
+  }
+
+  void _scrollToSelectedItem() {
+    final double itemWidth = 50; // 각 아이템의 너비
+    final double separatorWidth = 15; // 각 아이템 사이 간격의 너비
+    final double scrollPosition = (itemWidth + separatorWidth) *
+        selectedItemIndex; // 선택된 인덱스에 해당하는 스크롤 위치
+    _scrollController.jumpTo(scrollPosition);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(_data);
+    // print(_data);
     return Container(
       height: 90,
       padding: const EdgeInsets.all(10),
@@ -88,6 +106,7 @@ class _ThemeHeaderState extends State<ThemeHeader> {
       child: ListView.separated(
         scrollDirection: Axis.horizontal, // 가로 스크롤 방향 설정
         itemCount: 15, // 생성할 위젯의 개수
+        controller: _scrollController,
         separatorBuilder: (context, index) {
           return const SizedBox(width: 15); // 각 아이템 사이 간격 설정
         },

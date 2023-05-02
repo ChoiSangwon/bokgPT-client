@@ -181,7 +181,7 @@ class _ThemeBokjiState extends State<ThemeBokji> {
       setState(() {
         _data = data;
       });
-      print(data);
+      // print(data);
     } else {
       throw Exception('Failed to load data from endpoint.');
     }
@@ -241,17 +241,11 @@ class _ThemeBokjiState extends State<ThemeBokji> {
                             },
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                        child: SizedBox(
-                                          child: Text("$index"),
-                                        ),
-                                      );
-                                    },
-                                  );
+                                onTap: () async {
+                                  await _fetchData(index + 1);
+                                  // print(_data);
+                                  Get.toNamed('/theme',
+                                      arguments: [_data, index]);
                                 },
                                 child: Container(
                                   width: 60,
@@ -333,19 +327,10 @@ class _ThemeBokjiState extends State<ThemeBokji> {
                             itemBuilder: (context, index) {
                               return GestureDetector(
                                 onTap: () async {
-                                  await _fetchData(index + 1);
+                                  await _fetchData(index + 7);
                                   print(_data);
-                                  Get.toNamed('/theme', arguments: _data);
-                                  // showDialog(
-                                  //   context: context,
-                                  //   builder: (context) {
-                                  //     return Dialog(
-                                  //       child: SizedBox(
-                                  //         child: Text("${index + 7}"),
-                                  //       ),
-                                  //     );
-                                  //   },
-                                  // );
+                                  Get.toNamed('/theme',
+                                      arguments: [_data, index + 7]);
                                 },
                                 child: Container(
                                   width: 60,
