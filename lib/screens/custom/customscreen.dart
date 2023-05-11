@@ -67,7 +67,8 @@ class _CustomSelectState extends State<CustomSelect> {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding:
+                const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
             margin: const EdgeInsets.only(top: 10),
             decoration: BoxDecoration(
               color: const Color.fromRGBO(240, 241, 249, 1),
@@ -391,7 +392,7 @@ class _CustomSelectState extends State<CustomSelect> {
                 //   launchUrl(url, mode: LaunchMode.externalApplication);
                 // }
               },
-              child: Center(
+              child: const Center(
                 child: Text(
                   "저장하기",
                   style: TextStyle(
