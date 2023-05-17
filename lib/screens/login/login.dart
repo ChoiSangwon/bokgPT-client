@@ -1,3 +1,3 @@
 library login;
 
-export 'loginscreen.dart';
+export 'signIn.dart';
