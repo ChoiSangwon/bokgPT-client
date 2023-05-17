@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -18,6 +20,32 @@ class _CustomScreenState extends State<CustomScreen> {
       appBar: CustomAppBar(),
       body: SingleChildScrollView(
         child: Column(children: [
+          Container(
+            padding:
+                const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+            margin: const EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(240, 241, 249, 1),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.7),
+                  spreadRadius: 0,
+                  blurRadius: 5.0,
+                  offset: const Offset(2, 2),
+                ),
+              ],
+            ),
+            child: const Text(
+              "나에게 맞는 복지서비스 찾기",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           CustomSelect(),
         ]),
       ),
@@ -66,32 +94,6 @@ class _CustomSelectState extends State<CustomSelect> {
       color: Colors.white,
       child: Column(
         children: [
-          Container(
-            padding:
-                const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
-            margin: const EdgeInsets.only(top: 10),
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(240, 241, 249, 1),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.7),
-                  spreadRadius: 0,
-                  blurRadius: 5.0,
-                  offset: const Offset(2, 2),
-                ),
-              ],
-            ),
-            child: const Text(
-              "나에게 맞는 복지서비스 찾기",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: 10, top: 30),
@@ -386,11 +388,19 @@ class _CustomSelectState extends State<CustomSelect> {
                       );
                     },
                   );
+                } else {
+                  //   Map<String, dynamic> data = {
+                  //     'name': ,
+                  //     'email': 'hong@gildong.com',
+                  //     'gender': 'MALE',
+                  //     'locationId': 1,
+                  //     'lifeCycleId': 1,
+                  //     'password': '123',
+                  //   };
+
+                  //   String jsonStr = jsonEncode(data);
+                  //   print(jsonStr);
                 }
-                // final url = Uri.parse('${value.detailLink}'); //서비스 url
-                // if (await canLaunchUrl(url)) {
-                //   launchUrl(url, mode: LaunchMode.externalApplication);
-                // }
               },
               child: const Center(
                 child: Text(
