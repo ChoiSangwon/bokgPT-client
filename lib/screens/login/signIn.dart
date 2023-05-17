@@ -5,14 +5,14 @@ import 'package:get/get.dart';
 
 import '../../widget/appbar.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignInState extends State<SignIn> {
   final _formkey = GlobalKey<FormState>();
   String _id = "";
   String _password = "";
@@ -24,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
         width: Get.width,
         color: Colors.white,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
               width: 200,
@@ -174,9 +175,45 @@ class _LoginScreenState extends State<LoginScreen> {
                             );
                           }
                         },
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             "로그인",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 40),
+                      padding: EdgeInsets.all(15),
+                      width: 200,
+                      decoration: BoxDecoration(
+                        color: const Color.fromRGBO(187, 187, 187, 1),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.7),
+                            spreadRadius: 0,
+                            blurRadius: 5.0,
+                            offset: const Offset(2, 2),
+                          ),
+                        ],
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                      ),
+                      child: GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/signup');
+                        },
+                        child: const Center(
+                          child: Text(
+                            "회원가입",
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white,

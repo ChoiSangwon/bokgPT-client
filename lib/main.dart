@@ -1,6 +1,8 @@
 // import 'package:bokgpt_client/screens/infoscreen/infoscreen.dart';
 import 'package:bokgpt_client/screens/detail/detailscreen.dart';
 import 'package:bokgpt_client/screens/info/mainscreen.dart';
+import 'package:bokgpt_client/screens/login/login.dart';
+import 'package:bokgpt_client/screens/login/signUp.dart';
 import 'package:bokgpt_client/screens/theme/themescreen.dart';
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => MainScreen()),
         GetPage(name: '/theme', page: () => Themescreen()),
         GetPage(name: '/detail', page: () => DetailScreen()),
+        GetPage(name: '/signup', page: () => SignUp()),
+        GetPage(name: '/signin', page: () => SignIn())
       ],
       theme: ThemeData(
         //   primaryColor: Colors.black,
@@ -47,7 +51,7 @@ class MyApp extends StatelessWidget {
         //     ],
         //   ),
         // ),
-        body: MainScreen(),
+        body: SignUp(),
       ),
     );
   }
