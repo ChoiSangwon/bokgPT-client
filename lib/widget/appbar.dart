@@ -33,14 +33,27 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: (titleWidget == null)
-          ? Text(
-              'bokgPT',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-                overflow: TextOverflow.ellipsis,
-                color: color,
-              ),
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/splash.png',
+                  width: 40,
+                  height: 40,
+                ),
+                Text(
+                  'bokgPT',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    overflow: TextOverflow.ellipsis,
+                    color: color,
+                  ),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+              ],
             )
           : titleWidget,
       centerTitle: isTitleCentered,

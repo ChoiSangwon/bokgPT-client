@@ -19,9 +19,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
 
-assets:
-  - assets/images
-  - assets/icons
+  assets:
+    - assets/fonts/
+    - assets/icons/
+    - assets/images/
 
 fonts:
   - family: pretendard

@@ -93,7 +93,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 child: const Center(
                   child: Text(
-                    "회원가입",
+                    "회원가입 및 정보등록",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
