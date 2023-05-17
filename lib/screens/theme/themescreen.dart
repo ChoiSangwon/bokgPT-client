@@ -1,8 +1,6 @@
-import 'package:bokgpt_client/screens/detail/detailscreen.dart';
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:get/get.dart';
 import "package:bokgpt_client/env/env.dart";
 import 'dart:convert';
