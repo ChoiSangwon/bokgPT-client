@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import '../../env/env.dart';
+import '../../states/district.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -19,7 +20,8 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
-  String _id = "";
+  String _email = "";
+  String _name = "";
   String _password = "";
   String _confirmPassword = "";
 
@@ -29,6 +31,7 @@ class _SignUpState extends State<SignUp> {
   String _selectedDo = "";
   String _selectedEtc = "";
 
+  var gender = ["MALE", "FEMALE", "NONE"];
   void _selectGender(int index) {
     setState(() {
       _selectedIndex = index;
@@ -47,6 +50,16 @@ class _SignUpState extends State<SignUp> {
       fontSize: 16.0,
     );
   }
+
+  List<DropdownMenuItem<String>> dropdownItems =
+      seoulDistricts.asMap().entries.map((entry) {
+    int index = entry.key;
+    String district = entry.value;
+    return DropdownMenuItem<String>(
+      value: (index + 2).toString(),
+      child: Text(district),
+    );
+  }).toList();
 
   @override
   Widget build(BuildContext context) {
@@ -93,8 +106,8 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   children: [
                     Container(
-                      margin: EdgeInsets.only(bottom: 10, top: 30),
-                      child: Text(
+                      margin: const EdgeInsets.only(bottom: 10, top: 30),
+                      child: const Text(
                         "이름",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -103,8 +116,35 @@ class _SignUpState extends State<SignUp> {
                       ),
                     ),
                     Container(
+                      width: 250,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ),
+                        onSaved: (value) {
+                          setState(() {
+                            _name = value as String;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter some text';
+                          }
+                          if (value.length < 2) {
+                            return "2글자 이상 입력해주세요";
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Container(
                       margin: EdgeInsets.only(bottom: 10, top: 30),
-                      child: Text(
+                      child: const Text(
                         "이메일",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -125,7 +165,7 @@ class _SignUpState extends State<SignUp> {
                         ),
                         onSaved: (value) {
                           setState(() {
-                            _id = value as String;
+                            _email = value as String;
                           });
                         },
                         validator: (value) {
@@ -158,6 +198,11 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                         autovalidateMode: AutovalidateMode.always,
+                        onChanged: (value) {
+                          setState(() {
+                            _password = value;
+                          });
+                        },
                         onSaved: (value) {
                           setState(() {
                             _password = value as String;
@@ -223,17 +268,13 @@ class _SignUpState extends State<SignUp> {
                           if (!RegExp('[0-9]').hasMatch(value)) {
                             return '정규식';
                           }
+                          if (value.toString() != _password.toString()) {
+                            return "비밀번호와 다릅니다.";
+                          }
+
                           return null;
                         },
-                        // inputFormatters: [FilteringTextInputFormatter(RegExp('[0-9]'), allow:false), ],
-                        // focusNode: _passwordFocusNode,
-                        // keyboardType: TextInputType.text ,
                         obscureText: true,
-                        // decoration: InputDecoration(
-                        //   labelText: "비밀번호",
-                        //   suffixIcon: Icon(Icons.lock),
-                        // ),
-                        // textInputAction: TextInputAction.done,
                       ),
                     ),
                     Container(
@@ -306,7 +347,8 @@ class _SignUpState extends State<SignUp> {
                                   decoration: BoxDecoration(
                                     border: Border.all(
                                       width: 1,
-                                      color: Color.fromRGBO(204, 204, 204, 1),
+                                      color: const Color.fromRGBO(
+                                          204, 204, 204, 1),
                                     ),
                                     borderRadius: BorderRadius.circular(10.0),
                                     color: _getColor(2),
@@ -349,23 +391,23 @@ class _SignUpState extends State<SignUp> {
                               },
                               items: const [
                                 DropdownMenuItem(
-                                  value: "10",
+                                  value: "1",
                                   child: Text("10살"),
                                 ),
                                 DropdownMenuItem(
-                                  value: "20",
+                                  value: "2",
                                   child: Text("20살"),
                                 ),
                                 DropdownMenuItem(
-                                  value: "30",
+                                  value: "3",
                                   child: Text("30살"),
                                 ),
                                 DropdownMenuItem(
-                                  value: "40",
+                                  value: "4",
                                   child: Text("40살"),
                                 ),
                                 DropdownMenuItem(
-                                  value: "50",
+                                  value: "5",
                                   child: Text("50살"),
                                 ),
                               ],
@@ -388,7 +430,7 @@ class _SignUpState extends State<SignUp> {
                               isExpanded: true,
                               value:
                                   _selectedSi.isNotEmpty ? _selectedSi : null,
-                              hint: const Text("시/군/구 를 선택해주세요"),
+                              hint: const Text("시를 선택해주세요"),
                               onChanged: (value) {
                                 setState(() {
                                   _selectedSi = value!;
@@ -413,42 +455,21 @@ class _SignUpState extends State<SignUp> {
                               isExpanded: true,
                               value:
                                   _selectedDo.isNotEmpty ? _selectedDo : null,
-                              hint: const Text("읍/면/동 을 선택해주세요"),
+                              hint: const Text("구를 선택해주세요"),
                               onChanged: (value) {
                                 setState(() {
                                   _selectedDo = value!;
                                   // print(_selectedSi);
                                 });
                               },
-                              items: const [
-                                DropdownMenuItem(
-                                  value: "동작구",
-                                  child: Text("동작구"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "관악구",
-                                  child: Text("관악구"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "Item 3",
-                                  child: Text("30살"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "Item 4",
-                                  child: Text("40살"),
-                                ),
-                                DropdownMenuItem(
-                                  value: "Item 5",
-                                  child: Text("50살"),
-                                ),
-                              ],
+                              items: dropdownItems,
                             ),
                           ),
                           Container(
                             alignment: Alignment.centerLeft,
                             margin: const EdgeInsets.only(bottom: 10, top: 30),
                             child: const Text(
-                              "지역",
+                              "가구유형",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -540,17 +561,18 @@ class _SignUpState extends State<SignUp> {
                               _formkey.currentState!.save();
 
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(_id + '/' + _password)),
+                                SnackBar(
+                                    content: Text(_email + '/' + _password)),
                               );
                               final url = Uri.parse(
                                   '${ENV.apiEndpoint}/register'); // 대상 URL을 입력하세요.
                               final data = {
-                                "name": "name",
-                                "email": "hong@gildong.com",
-                                "gender": "MALE",
-                                "locationId": 1,
-                                "lifeCycleId": 1,
-                                "password": "123"
+                                "name": _name,
+                                "email": _email,
+                                "gender": gender[_selectedIndex],
+                                "locationId": _selectedDo,
+                                "lifeCycleId": _selectedAge,
+                                "password": _password,
                               };
 
                               final headers = {
