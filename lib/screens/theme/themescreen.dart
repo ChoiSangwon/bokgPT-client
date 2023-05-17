@@ -9,7 +9,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bokgpt_client/models/themelist.dart';
 import 'package:bokgpt_client/models/detailData.dart';
-// import 'package:bokgpt_client/models/themelist.dart';
 
 class Themescreen extends StatefulWidget {
   const Themescreen({super.key});
