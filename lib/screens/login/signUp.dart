@@ -212,10 +212,10 @@ class _SignUpState extends State<SignUp> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
                           }
-                          if (value.toString().length < 8) {
-                            return '8자 이상 입력';
+                          if (value.toString().length < 5) {
+                            return '5자 이상 입력';
                           }
-                          if (!RegExp('[0-9]').hasMatch(value)) {
+                          if (!RegExp('[0-9a-zA-Z]').hasMatch(value)) {
                             return '정규식';
                           }
                           return null;
@@ -262,8 +262,8 @@ class _SignUpState extends State<SignUp> {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some text';
                           }
-                          if (value.toString().length < 8) {
-                            return '8자 이상 입력';
+                          if (value.toString().length < 5) {
+                            return '5자 이상 입력';
                           }
                           if (!RegExp('[0-9]').hasMatch(value)) {
                             return '정규식';
@@ -482,7 +482,7 @@ class _SignUpState extends State<SignUp> {
                               isExpanded: true,
                               value:
                                   _selectedEtc.isNotEmpty ? _selectedEtc : null,
-                              hint: const Text("시/군/구 를 선택해주세요"),
+                              hint: const Text("가구유형을 선택해주세요"),
                               onChanged: (value) {
                                 setState(() {
                                   _selectedEtc = value!;
@@ -491,12 +491,24 @@ class _SignUpState extends State<SignUp> {
                               },
                               items: const [
                                 DropdownMenuItem(
-                                  value: "한부모가정",
-                                  child: Text("한부모가정"),
+                                  value: "1",
+                                  child: Text("다문화·탈북민"),
                                 ),
                                 DropdownMenuItem(
-                                  value: "아오",
-                                  child: Text("아오"),
+                                  value: "2",
+                                  child: Text('한부모·조손'),
+                                ),
+                                DropdownMenuItem(
+                                  value: "3",
+                                  child: Text('보훈대상자'),
+                                ),
+                                DropdownMenuItem(
+                                  value: "4",
+                                  child: Text('다자녀'),
+                                ),
+                                DropdownMenuItem(
+                                  value: "5",
+                                  child: Text('저소득'),
                                 ),
                               ],
                             ),
@@ -565,15 +577,24 @@ class _SignUpState extends State<SignUp> {
                                     content: Text(_email + '/' + _password)),
                               );
                               final url = Uri.parse(
-                                  '${ENV.apiEndpoint}/register'); // 대상 URL을 입력하세요.
+                                  '${ENV.apiEndpoint}/members'); // 대상 URL을 입력하세요.
                               final data = {
                                 "name": _name,
                                 "email": _email,
-                                "gender": gender[_selectedIndex],
-                                "locationId": _selectedDo,
-                                "lifeCycleId": _selectedAge,
                                 "password": _password,
+                                "gender": gender[_selectedIndex],
+                                "locationId": int.parse(_selectedDo),
+                                "lifeCycleId": int.parse(_selectedAge),
+                                "homeTypeId": int.parse(_selectedEtc)
+                                // "email": "aaaaa@naver.com",
+                                // "pad": "string",
+                                // "name": "strinaag",
+                                // "gender": "MALE",
+                                // "locationId": 1,
+                                // "lifeCycleId": 1,
+                                // "homeTypeId": 1
                               };
+                              print(data);
 
                               final headers = {
                                 'Content-Type': 'application/json'
@@ -583,10 +604,12 @@ class _SignUpState extends State<SignUp> {
                               final response = await http.post(url,
                                   headers: headers, body: body);
 
-                              if (response.statusCode == 200) {
+                              if (response.statusCode == 200 ||
+                                  response.statusCode == 201) {
                                 // 성공적으로 요청이 처리됨
                                 print('POST 요청이 성공하였습니다.');
                                 print('응답 본문: ${response.body}');
+                                Get.toNamed("/");
                               } else {
                                 // 요청이 실패함
                                 print('POST 요청이 실패하였습니다.');

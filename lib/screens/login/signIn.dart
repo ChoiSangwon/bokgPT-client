@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
+import '../../env/env.dart';
 import '../../widget/appbar.dart';
 
 class SignIn extends StatefulWidget {
@@ -14,7 +18,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formkey = GlobalKey<FormState>();
-  String _id = "";
+  String _email = "";
   String _password = "";
   @override
   Widget build(BuildContext context) {
@@ -82,7 +86,7 @@ class _SignInState extends State<SignIn> {
                       ),
                       onSaved: (value) {
                         setState(() {
-                          _id = value as String;
+                          _email = value as String;
                         });
                       },
                       validator: (value) {
@@ -124,10 +128,10 @@ class _SignInState extends State<SignIn> {
                         if (value == null || value.isEmpty) {
                           return 'Please enter some text';
                         }
-                        if (value.toString().length < 8) {
-                          return '8자 이상 입력';
+                        if (value.toString().length < 5) {
+                          return '5자 이상 입력';
                         }
-                        if (!RegExp('[0-9]').hasMatch(value)) {
+                        if (!RegExp('[0-9a-zA-Z]').hasMatch(value)) {
                           return '정규식';
                         }
                         return null;
@@ -163,16 +167,42 @@ class _SignInState extends State<SignIn> {
                         ),
                       ),
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           if (_formkey.currentState!.validate()) {
                             // validation 이 성공하면 폼 저장하기
                             _formkey.currentState!.save();
 
                             // If the form is valid, display a SnackBar. In the real world,
                             // you'd often call a server or save the information in a database.
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(_id + '/' + _password)),
-                            );
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   SnackBar(content: Text(_email + '/' + _password)),
+                            // );
+                            final url = Uri.parse(
+                                '${ENV.apiEndpoint}/login'); // 대상 URL을 입력하세요.
+                            final data = {
+                              "email": _email,
+                              "password": _password,
+                            };
+
+                            final headers = {
+                              'Content-Type': 'application/json'
+                            };
+                            final body = jsonEncode(data);
+
+                            final response = await http.post(url,
+                                headers: headers, body: body);
+
+                            if (response.statusCode == 200) {
+                              // 성공적으로 요청이 처리됨
+                              print('POST 요청이 성공하였습니다.');
+                              print('응답 본문: ${response.body}');
+                              Get.toNamed("/");
+                              print("a");
+                            } else {
+                              // 요청이 실패함
+                              print('POST 요청이 실패하였습니다.');
+                              print('응답 코드: ${response.statusCode}');
+                            }
                           }
                         },
                         child: const Center(
