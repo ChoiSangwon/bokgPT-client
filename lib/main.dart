@@ -34,28 +34,6 @@ class MyApp extends StatelessWidget {
           //   // primarySwatch: Colors.yellow,
           fontFamily: 'pretendard',
         ),
-        home: MainScreen()
-        // Scaffold(
-        //   // appBar: AppBar(
-        //   //   backgroundColor: Colors.white,
-        //   //   title: Row(
-        //   //     mainAxisAlignment: MainAxisAlignment.center,
-        //   //     children: const [
-        //   //       // Image.asset("assets/images/splash.png"),
-        //   //       // Icon(Icons.bulb)
-        //   //       Text(
-        //   //         "bokgPT",
-        //   //         style: TextStyle(
-        //   //           color: Colors.black,
-        //   //           fontWeight: FontWeight.w500,
-        //   //           fontSize: 22,
-        //   //         ),
-        //   //       ),
-        //   //     ],
-        //   //   ),
-        //   // ),
-        //   body: SignIn(),
-        // ),
-        );
+        home: MainScreen());
   }
 }

@@ -32,16 +32,17 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: false,
       centerTitle: true,
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
       elevation: 0,
-      title: Image.asset(
-        'assets/images/appbar.png',
-        scale: 1.5,
-        // width: 40,
-        // height: 40,
-      ),
+      // title: Image.asset(
+      //   'assets/images/appbar.png',
+      //   scale: 1.5,
+      //   // width: 40,
+      //   // height: 40,
+      // ),
       // title: const Text(
       //   'bokgPT',
       //   style: TextStyle(
@@ -63,28 +64,41 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       //     ),
       //   ],
       // ),
-      //     Row(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: [
-      //     Image.asset(
-      //       'assets/images/splash.png',
-      //       scale: 30,
-      //       // width: 40,
-      //       // height: 40,
-      //     ),
-      //     const Text(
-      //       'bokgPT',
-      //       style: TextStyle(
-      //         fontSize: 18,
-      //         fontWeight: FontWeight.w700,
-      //         overflow: TextOverflow.ellipsis,
-      //       ),
-      //     ),
-      //     // const SizedBox(
-      //     //   width: 20,
-      //     // ),
-      //   ],
-      // ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          // SizedBox(
+          //   width: 110,
+          // ),
+          Image.asset(
+            'assets/images/splash.png',
+            scale: 30,
+            // width: 40,
+            // height: 40,
+          ),
+          const Text(
+            'bokgPT',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          // Container(
+          //   width: 110,
+          //   alignment: Alignment.centerRight,
+          //   child: GestureDetector(
+          //     onTap: () {
+          //       Get.toNamed('/signin');
+          //     },
+          //     child: Icon(Icons.person),
+          //   ),
+          // ),
+          // SizedBox(
+          //   width: 100,
+          // ),
+        ],
+      ),
 
       // leadingWidth: (goingBackString == '') ? 50 : 70,
       // leading: () {

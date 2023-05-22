@@ -1,3 +1,4 @@
+import 'package:bokgpt_client/widget/bottomNavigator.dart';
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,18 +20,20 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: SingleChildScrollView(
-          child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          //나에게 맞는 시설 추천
-          RecommendBokji(),
-          //테마별 보기
-          ThemeBokji(),
-          //최신 게시물
-          communityBokji(),
-        ],
-      )),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            //나에게 맞는 시설 추천
+            RecommendBokji(),
+            //테마별 보기
+            ThemeBokji(),
+            //최신 게시물
+            communityBokji(),
+          ],
+        ),
+      ),
     );
   }
 }

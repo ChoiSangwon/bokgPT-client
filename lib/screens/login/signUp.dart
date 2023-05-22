@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 
 import '../../env/env.dart';
 import '../../states/district.dart';
+import '../../widget/bottomNavigator.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -65,6 +66,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: SingleChildScrollView(
         child: Container(
           width: Get.width,

@@ -8,6 +8,8 @@ import 'package:http/http.dart' as http;
 import 'package:bokgpt_client/models/themelist.dart';
 import 'package:bokgpt_client/models/detailData.dart';
 
+import '../../widget/bottomNavigator.dart';
+
 class Themescreen extends StatefulWidget {
   const Themescreen({super.key});
 
@@ -20,6 +22,7 @@ class _ThemescreenState extends State<Themescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: Container(
         color: Colors.white,
         child: Column(
