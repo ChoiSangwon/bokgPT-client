@@ -4,7 +4,12 @@ import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import '../../env/env.dart';
+import '../../models/detailData.dart';
 import '../../states/district.dart';
+import 'package:http/http.dart' as http;
+
+import '../../widget/bottomNavigator.dart';
 
 List<DropdownMenuItem<String>> dropdownItems =
     seoulDistricts.asMap().entries.map((entry) {
@@ -28,6 +33,7 @@ class _CustomScreenState extends State<CustomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: SingleChildScrollView(
         child: Column(children: [
           Container(
@@ -76,6 +82,7 @@ class _CustomSelectState extends State<CustomSelect> {
   String _selectedSi = "";
   String _selectedDo = "";
   String _selectedEtc = "";
+  var gender = ["MALE", "FEMALE", "NONE"];
 
   void _selectGender(int index) {
     setState(() {
@@ -382,6 +389,31 @@ class _CustomSelectState extends State<CustomSelect> {
                     },
                   );
                 } else {
+                  print(
+                      '${ENV.apiEndpoint}/welfares?lifeCycleId=${int.parse(_selectedAge)}&locationId=${int.parse(_selectedDo)}&homeTypeId=${int.parse(_selectedEtc)}&gender=${gender[_selectedIndex]}&size=100');
+
+                  final response = await http.get(Uri.parse(
+                      '${ENV.apiEndpoint}/welfares?lifeCycleId=${int.parse(_selectedAge)}&locationId=${int.parse(_selectedDo) - 1}&homeTypeId=${int.parse(_selectedEtc)}&gender=${gender[_selectedIndex]}&size=100'));
+                  // print(response);
+
+                  if (response.statusCode == 200) {
+                    final jsonData =
+                        jsonDecode(utf8.decode(response.bodyBytes));
+                    // DetailData tmp = DetailData.fromJson(jsonData);
+                    print(jsonData);
+                    // print(tmp.id);
+                    // setState(() {
+                    //   _detData = jsonData;
+                    // });
+                    // print(_detData);
+                  } else {
+                    throw Exception('Failed to load detail data');
+                  }
+                  //           @RequestParam(required = false) Gender gender,
+                  // @RequestParam(required = false, defaultValue = "0") Long lifeCycleId,
+                  // @RequestParam(required = false, defaultValue = "0") Long locationId,
+                  // @RequestParam(required = false, defaultValue = "0") Long homeTypeId,
+                  // @RequestParam(required = false, defaultValue = "0") Long interestThemeId,
                   //   Map<String, dynamic> data = {
                   //     'name': ,
                   //     'email': 'hong@gildong.com',
