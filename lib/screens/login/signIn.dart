@@ -196,7 +196,7 @@ class _SignInState extends State<SignIn> {
                               // 성공적으로 요청이 처리됨
                               print('POST 요청이 성공하였습니다.');
                               print('응답 본문: ${response.body}');
-                              Get.toNamed("/");
+                              Get.offAllNamed("/");
                               print("a");
                             } else {
                               // 요청이 실패함

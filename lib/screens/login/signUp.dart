@@ -255,7 +255,7 @@ class _SignUpState extends State<SignUp> {
                         autovalidateMode: AutovalidateMode.always,
                         onSaved: (value) {
                           setState(() {
-                            _password = value as String;
+                            _confirmPassword = value as String;
                           });
                         },
                         validator: (value) {
@@ -544,7 +544,6 @@ class _SignUpState extends State<SignUp> {
                                 _selectedDo == "" ||
                                 _selectedEtc == "") {
                               return showDialog<void>(
-                                //다이얼로그 위젯 소환
                                 context: context,
                                 barrierDismissible:
                                     false, // 다이얼로그 이외의 바탕 눌러도 안꺼지도록 설정
@@ -586,13 +585,6 @@ class _SignUpState extends State<SignUp> {
                                 "locationId": int.parse(_selectedDo),
                                 "lifeCycleId": int.parse(_selectedAge),
                                 "homeTypeId": int.parse(_selectedEtc)
-                                // "email": "aaaaa@naver.com",
-                                // "pad": "string",
-                                // "name": "strinaag",
-                                // "gender": "MALE",
-                                // "locationId": 1,
-                                // "lifeCycleId": 1,
-                                // "homeTypeId": 1
                               };
                               print(data);
 
@@ -609,7 +601,8 @@ class _SignUpState extends State<SignUp> {
                                 // 성공적으로 요청이 처리됨
                                 print('POST 요청이 성공하였습니다.');
                                 print('응답 본문: ${response.body}');
-                                Get.toNamed("/");
+                                // Get.toNamed("/");
+                                Get.off("/signin");
                               } else {
                                 // 요청이 실패함
                                 print('POST 요청이 실패하였습니다.');

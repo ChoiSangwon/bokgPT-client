@@ -2,9 +2,19 @@ import 'dart:convert';
 
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:get/get.dart';
+import '../../states/district.dart';
+
+List<DropdownMenuItem<String>> dropdownItems =
+    seoulDistricts.asMap().entries.map((entry) {
+  int index = entry.key;
+  String district = entry.value;
+  return DropdownMenuItem<String>(
+    value: (index + 2).toString(),
+    child: Text(district),
+  );
+}).toList();
 
 class CustomScreen extends StatefulWidget {
   const CustomScreen({super.key});
@@ -198,24 +208,32 @@ class _CustomSelectState extends State<CustomSelect> {
               },
               items: const [
                 DropdownMenuItem(
-                  value: "10",
-                  child: Text("10살"),
+                  value: '1',
+                  child: Text("청소년"),
                 ),
                 DropdownMenuItem(
-                  value: "20",
-                  child: Text("20살"),
+                  value: "2",
+                  child: Text("구분없음(전생애)"),
                 ),
                 DropdownMenuItem(
-                  value: "30",
-                  child: Text("30살"),
+                  value: "3",
+                  child: Text("영유아"),
                 ),
                 DropdownMenuItem(
-                  value: "40",
-                  child: Text("40살"),
+                  value: "4",
+                  child: Text("아동"),
                 ),
                 DropdownMenuItem(
-                  value: "50",
-                  child: Text("50살"),
+                  value: "5",
+                  child: Text("임신 · 출산"),
+                ),
+                DropdownMenuItem(
+                  value: "6",
+                  child: Text("중장년"),
+                ),
+                DropdownMenuItem(
+                  value: "7",
+                  child: Text("노년"),
                 ),
               ],
             ),
@@ -248,22 +266,6 @@ class _CustomSelectState extends State<CustomSelect> {
                   value: "서울특별시",
                   child: Text("서울특별시"),
                 ),
-                DropdownMenuItem(
-                  value: "인천광역시",
-                  child: Text("인천광역시"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 3",
-                  child: Text("30살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 4",
-                  child: Text("40살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 5",
-                  child: Text("50살"),
-                ),
               ],
             ),
           ),
@@ -279,28 +281,7 @@ class _CustomSelectState extends State<CustomSelect> {
                   // print(_selectedSi);
                 });
               },
-              items: const [
-                DropdownMenuItem(
-                  value: "동작구",
-                  child: Text("동작구"),
-                ),
-                DropdownMenuItem(
-                  value: "관악구",
-                  child: Text("관악구"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 3",
-                  child: Text("30살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 4",
-                  child: Text("40살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 5",
-                  child: Text("50살"),
-                ),
-              ],
+              items: dropdownItems,
             ),
           ),
           Container(
@@ -328,12 +309,24 @@ class _CustomSelectState extends State<CustomSelect> {
               },
               items: const [
                 DropdownMenuItem(
-                  value: "한부모가정",
-                  child: Text("한부모가정"),
+                  value: "1",
+                  child: Text("다문화·탈북민"),
                 ),
                 DropdownMenuItem(
-                  value: "아오",
-                  child: Text("아오"),
+                  value: "2",
+                  child: Text('한부모·조손'),
+                ),
+                DropdownMenuItem(
+                  value: "3",
+                  child: Text('보훈대상자'),
+                ),
+                DropdownMenuItem(
+                  value: "4",
+                  child: Text('다자녀'),
+                ),
+                DropdownMenuItem(
+                  value: "5",
+                  child: Text('저소득'),
                 ),
               ],
             ),
