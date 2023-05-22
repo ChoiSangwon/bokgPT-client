@@ -2,29 +2,29 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  final bool allowBackButton;
+  // final bool allowBackButton;
   // final String title;
-  final Widget? titleWidget;
-  final Color color;
+  // final Widget? titleWidget;
+  // final Color color;
 
   ///actions는 AppBarButton 내부에서만 사용할 수 있도록 제작
-  final List<Widget>? actions;
-  final String goingBackString;
-  final bool isTitleCentered;
+  // final List<Widget>? actions;
+  // final String goingBackString;
+  // final bool isTitleCentered;
 
-  final void Function()? onTapBack;
+  // final void Function()? onTapBack;
 
-  CustomAppBar(
-      {Key? key,
-      this.allowBackButton = true,
-      this.goingBackString = '',
-      // required this.title,
-      this.actions,
-      this.onTapBack,
-      this.isTitleCentered = true,
-      this.titleWidget,
-      this.color = Colors.black})
-      : super(key: key);
+  // CustomAppBar(
+  //     {Key? key,
+  //     this.allowBackButton = true,
+  //     this.goingBackString = '',
+  //     // required this.title,
+  //     this.actions,
+  //     this.onTapBack,
+  //     this.isTitleCentered = true,
+  //     this.titleWidget,
+  //     this.color = Colors.black})
+  //     : super(key: key);
 
   @override
   Size get preferredSize => const Size.fromHeight(60);
@@ -32,36 +32,63 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: (titleWidget == null)
-          ? Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/splash.png',
-                  width: 40,
-                  height: 40,
-                ),
-                Text(
-                  'bokgPT',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    overflow: TextOverflow.ellipsis,
-                    color: color,
-                  ),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-              ],
-            )
-          : titleWidget,
-      centerTitle: isTitleCentered,
+      centerTitle: true,
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
       elevation: 0,
-      leadingWidth: (goingBackString == '') ? 50 : 70,
+      title: Image.asset(
+        'assets/images/appbar.png',
+        scale: 1.5,
+        // width: 40,
+        // height: 40,
+      ),
+      // title: const Text(
+      //   'bokgPT',
+      //   style: TextStyle(
+      //     fontSize: 18,
+      //     fontWeight: FontWeight.w700,
+      //     overflow: TextOverflow.ellipsis,
+      //   ),
+      // ),
+      // Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Text(
+      //       'bokgPT',
+      //       style: TextStyle(
+      //         fontSize: 18,
+      //         fontWeight: FontWeight.w700,
+      //         overflow: TextOverflow.ellipsis,
+      //       ),
+      //     ),
+      //   ],
+      // ),
+      //     Row(
+      //   mainAxisAlignment: MainAxisAlignment.center,
+      //   children: [
+      //     Image.asset(
+      //       'assets/images/splash.png',
+      //       scale: 30,
+      //       // width: 40,
+      //       // height: 40,
+      //     ),
+      //     const Text(
+      //       'bokgPT',
+      //       style: TextStyle(
+      //         fontSize: 18,
+      //         fontWeight: FontWeight.w700,
+      //         overflow: TextOverflow.ellipsis,
+      //       ),
+      //     ),
+      //     // const SizedBox(
+      //     //   width: 20,
+      //     // ),
+      //   ],
+      // ),
+
+      // leadingWidth: (goingBackString == '') ? 50 : 70,
       // leading: () {
+      // print(goingBackString);
       //   if (allowBackButton) {
       //     if (goingBackString != '') {
       //       return InkWell(
@@ -92,7 +119,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 
       //   return Container();
       // }(),
-      actions: actions,
+      // actions: actions,
     );
   }
 }
@@ -107,20 +134,21 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
 //       top: 40,
 //       left: 20,
 //       child: GestureDetector(
-//           onTap: () {
-//             Get.back();
-//           },
-//           child: Container(
-//             padding: const EdgeInsets.all(5),
-//             decoration: const BoxDecoration(
-//               shape: BoxShape.circle,
-//               color: Colors.white,
-//             ),
-//             child: const Icon(
-//               Icons.chevron_left_rounded,
-//               size: 30,
-//             ),
-//           )),
+//         onTap: () {
+//           Get.back();
+//         },
+//         child: Container(
+//           padding: const EdgeInsets.all(5),
+//           decoration: const BoxDecoration(
+//             shape: BoxShape.circle,
+//             color: Colors.white,
+//           ),
+//           child: const Icon(
+//             Icons.chevron_left_rounded,
+//             size: 40,
+//           ),
+//         ),
+//       ),
 //     );
 //   }
 // }
