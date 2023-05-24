@@ -175,6 +175,8 @@ class _ThemeBokjiState extends State<ThemeBokji> {
   Future<void> _fetchData(int themeId) async {
     final response = await http.get(Uri.parse(
         '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string'));
+    print(
+        '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string');
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(utf8.decode(response.bodyBytes))["content"]
           as List<dynamic>;
