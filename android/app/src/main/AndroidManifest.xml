@@ -2,7 +2,7 @@
     package="com.example.bokgpt_client">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="bokgpt_client"
+        android:label="복지피티"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
