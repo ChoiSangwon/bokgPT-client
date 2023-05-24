@@ -1,8 +1,25 @@
+import 'dart:convert';
+
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:get/get.dart';
+import '../../env/env.dart';
+import '../../models/detailData.dart';
+import '../../states/district.dart';
+import 'package:http/http.dart' as http;
+
+import '../../widget/bottomNavigator.dart';
+
+List<DropdownMenuItem<String>> dropdownItems =
+    seoulDistricts.asMap().entries.map((entry) {
+  int index = entry.key;
+  String district = entry.value;
+  return DropdownMenuItem<String>(
+    value: (index + 2).toString(),
+    child: Text(district),
+  );
+}).toList();
 
 class CustomScreen extends StatefulWidget {
   const CustomScreen({super.key});
@@ -16,8 +33,35 @@ class _CustomScreenState extends State<CustomScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: SingleChildScrollView(
         child: Column(children: [
+          Container(
+            padding:
+                const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
+            margin: const EdgeInsets.only(top: 10),
+            decoration: BoxDecoration(
+              color: const Color.fromRGBO(240, 241, 249, 1),
+              borderRadius: const BorderRadius.all(
+                Radius.circular(20),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.7),
+                  spreadRadius: 0,
+                  blurRadius: 5.0,
+                  offset: const Offset(2, 2),
+                ),
+              ],
+            ),
+            child: const Text(
+              "나에게 맞는 복지서비스 찾기",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           CustomSelect(),
         ]),
       ),
@@ -38,6 +82,7 @@ class _CustomSelectState extends State<CustomSelect> {
   String _selectedSi = "";
   String _selectedDo = "";
   String _selectedEtc = "";
+  var gender = ["MALE", "FEMALE", "NONE"];
 
   void _selectGender(int index) {
     setState(() {
@@ -66,32 +111,6 @@ class _CustomSelectState extends State<CustomSelect> {
       color: Colors.white,
       child: Column(
         children: [
-          Container(
-            padding:
-                const EdgeInsets.only(top: 10, bottom: 10, right: 20, left: 20),
-            margin: const EdgeInsets.only(top: 10),
-            decoration: BoxDecoration(
-              color: const Color.fromRGBO(240, 241, 249, 1),
-              borderRadius: const BorderRadius.all(
-                Radius.circular(20),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.7),
-                  spreadRadius: 0,
-                  blurRadius: 5.0,
-                  offset: const Offset(2, 2),
-                ),
-              ],
-            ),
-            child: const Text(
-              "나에게 맞는 복지서비스 찾기",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
           Container(
             alignment: Alignment.centerLeft,
             margin: EdgeInsets.only(bottom: 10, top: 30),
@@ -196,24 +215,32 @@ class _CustomSelectState extends State<CustomSelect> {
               },
               items: const [
                 DropdownMenuItem(
-                  value: "10",
-                  child: Text("10살"),
+                  value: '1',
+                  child: Text("청소년"),
                 ),
                 DropdownMenuItem(
-                  value: "20",
-                  child: Text("20살"),
+                  value: "2",
+                  child: Text("구분없음(전생애)"),
                 ),
                 DropdownMenuItem(
-                  value: "30",
-                  child: Text("30살"),
+                  value: "3",
+                  child: Text("영유아"),
                 ),
                 DropdownMenuItem(
-                  value: "40",
-                  child: Text("40살"),
+                  value: "4",
+                  child: Text("아동"),
                 ),
                 DropdownMenuItem(
-                  value: "50",
-                  child: Text("50살"),
+                  value: "5",
+                  child: Text("임신 · 출산"),
+                ),
+                DropdownMenuItem(
+                  value: "6",
+                  child: Text("중장년"),
+                ),
+                DropdownMenuItem(
+                  value: "7",
+                  child: Text("노년"),
                 ),
               ],
             ),
@@ -246,22 +273,6 @@ class _CustomSelectState extends State<CustomSelect> {
                   value: "서울특별시",
                   child: Text("서울특별시"),
                 ),
-                DropdownMenuItem(
-                  value: "인천광역시",
-                  child: Text("인천광역시"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 3",
-                  child: Text("30살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 4",
-                  child: Text("40살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 5",
-                  child: Text("50살"),
-                ),
               ],
             ),
           ),
@@ -277,28 +288,7 @@ class _CustomSelectState extends State<CustomSelect> {
                   // print(_selectedSi);
                 });
               },
-              items: const [
-                DropdownMenuItem(
-                  value: "동작구",
-                  child: Text("동작구"),
-                ),
-                DropdownMenuItem(
-                  value: "관악구",
-                  child: Text("관악구"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 3",
-                  child: Text("30살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 4",
-                  child: Text("40살"),
-                ),
-                DropdownMenuItem(
-                  value: "Item 5",
-                  child: Text("50살"),
-                ),
-              ],
+              items: dropdownItems,
             ),
           ),
           Container(
@@ -326,12 +316,24 @@ class _CustomSelectState extends State<CustomSelect> {
               },
               items: const [
                 DropdownMenuItem(
-                  value: "한부모가정",
-                  child: Text("한부모가정"),
+                  value: "1",
+                  child: Text("다문화·탈북민"),
                 ),
                 DropdownMenuItem(
-                  value: "아오",
-                  child: Text("아오"),
+                  value: "2",
+                  child: Text('한부모·조손'),
+                ),
+                DropdownMenuItem(
+                  value: "3",
+                  child: Text('보훈대상자'),
+                ),
+                DropdownMenuItem(
+                  value: "4",
+                  child: Text('다자녀'),
+                ),
+                DropdownMenuItem(
+                  value: "5",
+                  child: Text('저소득'),
                 ),
               ],
             ),
@@ -386,11 +388,44 @@ class _CustomSelectState extends State<CustomSelect> {
                       );
                     },
                   );
+                } else {
+                  print(
+                      '${ENV.apiEndpoint}/welfares?lifeCycleId=${int.parse(_selectedAge)}&locationId=${int.parse(_selectedDo)}&homeTypeId=${int.parse(_selectedEtc)}&gender=${gender[_selectedIndex]}&size=100');
+
+                  final response = await http.get(Uri.parse(
+                      '${ENV.apiEndpoint}/welfares?lifeCycleId=${int.parse(_selectedAge)}&locationId=${int.parse(_selectedDo) - 1}&homeTypeId=${int.parse(_selectedEtc)}&gender=${gender[_selectedIndex]}&size=100'));
+                  // print(response);
+
+                  if (response.statusCode == 200) {
+                    final jsonData =
+                        jsonDecode(utf8.decode(response.bodyBytes));
+                    // DetailData tmp = DetailData.fromJson(jsonData);
+                    print(jsonData);
+                    // print(tmp.id);
+                    // setState(() {
+                    //   _detData = jsonData;
+                    // });
+                    // print(_detData);
+                  } else {
+                    throw Exception('Failed to load detail data');
+                  }
+                  //           @RequestParam(required = false) Gender gender,
+                  // @RequestParam(required = false, defaultValue = "0") Long lifeCycleId,
+                  // @RequestParam(required = false, defaultValue = "0") Long locationId,
+                  // @RequestParam(required = false, defaultValue = "0") Long homeTypeId,
+                  // @RequestParam(required = false, defaultValue = "0") Long interestThemeId,
+                  //   Map<String, dynamic> data = {
+                  //     'name': ,
+                  //     'email': 'hong@gildong.com',
+                  //     'gender': 'MALE',
+                  //     'locationId': 1,
+                  //     'lifeCycleId': 1,
+                  //     'password': '123',
+                  //   };
+
+                  //   String jsonStr = jsonEncode(data);
+                  //   print(jsonStr);
                 }
-                // final url = Uri.parse('${value.detailLink}'); //서비스 url
-                // if (await canLaunchUrl(url)) {
-                //   launchUrl(url, mode: LaunchMode.externalApplication);
-                // }
               },
               child: const Center(
                 child: Text(

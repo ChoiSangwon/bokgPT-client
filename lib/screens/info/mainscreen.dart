@@ -1,11 +1,11 @@
-import 'package:bokgpt_client/screens/theme/themescreen.dart';
+import 'package:bokgpt_client/widget/bottomNavigator.dart';
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import "package:bokgpt_client/env/env.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:bokgpt_client/widget/widgets.dart';
+
 import 'package:bokgpt_client/models/themelist.dart';
 
 class MainScreen extends StatefulWidget {
@@ -20,18 +20,20 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: SingleChildScrollView(
-          child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          //나에게 맞는 시설 추천
-          RecommendBokji(),
-          //테마별 보기
-          ThemeBokji(),
-          //최신 게시물
-          communityBokji(),
-        ],
-      )),
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            //나에게 맞는 시설 추천
+            RecommendBokji(),
+            //테마별 보기
+            ThemeBokji(),
+            //최신 게시물
+            communityBokji(),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -75,30 +77,32 @@ class _RecommendBokjiState extends State<RecommendBokji> {
         ),
         GestureDetector(
           onTap: () {
-            showDialog(
-                context: context,
-                builder: (context) {
-                  return Dialog(
-                    child: SizedBox(
-                      height: 200,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
-                            Icons.warning,
-                            size: 40,
-                          ),
-                          Text(
-                            '아직 서비스 준비중입니다',
-                            style: TextStyle(
-                              fontSize: 22,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                });
+            Get.toNamed('/custom');
+            // Get.toNamed('/signin');
+            // showDialog(
+            //     context: context,
+            //     builder: (context) {
+            //       return Dialog(
+            //         child: SizedBox(
+            //           height: 200,
+            //           child: Column(
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: const [
+            //               Icon(
+            //                 Icons.warning,
+            //                 size: 40,
+            //               ),
+            //               Text(
+            //                 '아직 서비스 준비중입니다',
+            //                 style: TextStyle(
+            //                   fontSize: 22,
+            //                 ),
+            //               ),
+            //             ],
+            //           ),
+            //         ),
+            //       );
+            //     });
           },
           child: Stack(
             children: [
@@ -171,6 +175,8 @@ class _ThemeBokjiState extends State<ThemeBokji> {
   Future<void> _fetchData(int themeId) async {
     final response = await http.get(Uri.parse(
         '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string'));
+    print(
+        '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string');
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(utf8.decode(response.bodyBytes))["content"]
           as List<dynamic>;

@@ -1,15 +1,14 @@
-import 'package:bokgpt_client/screens/detail/detailscreen.dart';
 import 'package:bokgpt_client/widget/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:get/get.dart';
 import "package:bokgpt_client/env/env.dart";
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:bokgpt_client/models/themelist.dart';
 import 'package:bokgpt_client/models/detailData.dart';
-// import 'package:bokgpt_client/models/themelist.dart';
+
+import '../../widget/bottomNavigator.dart';
 
 class Themescreen extends StatefulWidget {
   const Themescreen({super.key});
@@ -23,6 +22,7 @@ class _ThemescreenState extends State<Themescreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
+      bottomNavigationBar: const CustomBottomNavigator(),
       body: Container(
         color: Colors.white,
         child: Column(
@@ -61,6 +61,8 @@ class _ThemeHeaderState extends State<ThemeHeader> {
   Future<void> _fetchData(int themeId) async {
     final response = await http.get(Uri.parse(
         '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string'));
+    // print(
+    //     '${ENV.apiEndpoint}/welfares/interest-themes/${themeId}?page=0&size=10&sort=string');
     if (response.statusCode == 200) {
       final jsonData = jsonDecode(utf8.decode(response.bodyBytes))["content"]
           as List<dynamic>;
